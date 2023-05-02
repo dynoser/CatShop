@@ -2,7 +2,7 @@
   $sortOptionsArr = [
     'price_asc' => 'by price increase', //'От дешевых к дорогим',
     'alphabetical' => 'By Alphabet', //'По алфавиту',
-    'newest' => 'Newer ones first', //'Сначала более новые',
+    'newest' => 'Newer first', //'Сначала более новые',
   ];
 
   $patternsArr = [
