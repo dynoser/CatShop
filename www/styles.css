@@ -6,3 +6,7 @@
   width: 100%;
   height: auto;
 }
+
+#categories a.active {
+  font-weight: bold;
+}

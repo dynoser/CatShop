@@ -1,22 +1,30 @@
 var patternDateAddModal = 'Товар в продаже с {date}';
 var patternDateAddList = 'в продаже с {date}';
 
+var currentCategoryId = 0;
+
 $(document).ready(function() {
+
+    currentCategoryId = getUrlParams().categoryId;
+
     // Load categories
     $.getJSON('ajax/categories.php', function(data) {
         var categoriesList = $('#categories');
         categoriesList.empty();
         $.each(data, function(index, category) {
             var listItem = $('<li>').addClass('list-group-item d-flex justify-content-between align-items-center');
-            var categoryName = $('<a>').text(category.name).attr('href', '#').data('categoryId', category.id);
+            var categoryName = $('<a>').text(category.name).attr('href', '#').attr('data-category-id', category.id);
             var countBadge = $('<span>').addClass('badge badge-primary badge-pill').text(category.count);
             listItem.append(categoryName, countBadge);
             categoriesList.append(listItem);
+            if (currentCategoryId == category.id) {
+                categoryName.addClass('active');
+            }
         });
     });
 
     // Load Products when page loading
-    loadProducts();
+    loadProducts(currentCategoryId);
 
     // Load Produtcs after click on category
     $('#categories').on('click', 'a', function(event) {
@@ -25,7 +33,17 @@ $(document).ready(function() {
         var sortingOption = $('#sorting').val();
         updateUrlParams(categoryId, sortingOption);
         loadProducts(categoryId);
+    
+        // remove "active" class from previous selected category
+        if (currentCategoryId) {
+            $('#categories').find('a[data-category-id="' + currentCategoryId + '"]').removeClass('active');
+        }
+        // add "active" class to current selected category
+        $(this).addClass('active');
+        // change current selected category
+        currentCategoryId = categoryId;
     });
+    
 
     // Sorting produtcs by selectbox
     $('#sorting').on('change', function() {
