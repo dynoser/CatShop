@@ -6,10 +6,10 @@ var currentSortingOpt = 0;
 
 $(document).ready(function() {
 
-    currentCategoryId    = getUrlParams().categoryId;
+    currentCategoryId = getUrlParams().categoryId;
     currentSortingOpt = getUrlParams().sortingOption;
 
-    // Load categories
+    // Load all categories from server
     $.getJSON('ajax/categories.php', function(data) {
         var categoriesList = $('#categories');
         categoriesList.empty();
@@ -25,10 +25,10 @@ $(document).ready(function() {
         });
     });
 
-    // Load Products when page loading
+    // Load Products by current category, or all products if category not selected
     loadProducts(currentCategoryId);
 
-    // Load Produtcs after click on category
+    // onClick category
     $('#categories').on('click', 'a', function(event) {
         event.preventDefault();
         var categoryId = $(this).data('categoryId');
