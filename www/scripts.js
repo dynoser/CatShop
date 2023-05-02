@@ -1,3 +1,6 @@
+var patternDateAddModal = 'Товар в продаже с {date}';
+var patternDateAddList = 'в продаже с {date}';
+
 $(document).ready(function() {
     // Load categories
     $.getJSON('ajax/categories.php', function(data) {
@@ -50,14 +53,20 @@ function loadProducts(categoryId) {
         var productsList = $('#products');
         productsList.empty();
         $.each(data, function(index, product) {
+            var DateAdd = new Date(product.date_added);
+            product.DateAdd = DateAdd;
+            product.unixtimeDateAdd = product.DateAdd.getTime();
+            product.formattedDateAdd = product.DateAdd.toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+
             var card = $('<div>').addClass('col-md-4 product-card').data('product', product);
             card.attr('data-product', JSON.stringify(product));
             var image = $('<img>').attr('src', product.image);
             var title = $('<h4>').text(product.name);
+            var dateAdd = $('<small>').text(patternDateAddList.replace("{date}", product.formattedDateAdd));
             var description = $('<p>').text(product.description);
             var price = $('<p>').addClass('text-success').text('$' + product.price);
             var buyButton = $('<a>').addClass('btn btn-primary btn-block buy-button').attr('href', '#').text('Купить');
-            card.append(image, title, description, price, buyButton);
+            card.append(image, title, dateAdd, description, price, buyButton);
             productsList.append(card);
         });
         var sortingOption = getUrlParams().sortingOption;
@@ -79,7 +88,7 @@ function sortProducts(sortingOption) {
             case 'alphabetical':
                 return aData.name.localeCompare(bData.name);
             case 'newest':
-                return new Date(bData.date_added) - new Date(aData.date_added);
+                return aData.unixtimeDateAdd - bData.unixtimeDateAdd;
             default:
                 return 0;
         }
@@ -97,10 +106,11 @@ function showProductModal(product) {
     modalContent.empty();
     var image = $('<img>').attr('src', product.image);
     var title = $('<h4>').text(product.name);
+    var dateAdd = $('<small>').text(patternDateAddModal.replace('{date}', product.formattedDateAdd));
     var description = $('<p>').text(product.description);
     var price = $('<p>').addClass('text-success').text('$' + product.price);
     var closeButton = $('<button>').addClass('btn btn-secondary').attr('type', 'button').attr('data-dismiss', 'modal').text('Close');
-    modalContent.append(image, title, description, price, closeButton);
+    modalContent.append(image, title, description, dateAdd, price, closeButton);
     modal.modal('show');
 }
 
