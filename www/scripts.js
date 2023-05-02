@@ -2,10 +2,12 @@ var patternDateAddModal = 'Товар в продаже с {date}';
 var patternDateAddList = 'в продаже с {date}';
 
 var currentCategoryId = 0;
+var currentSortingOpt = 0;
 
 $(document).ready(function() {
 
-    currentCategoryId = getUrlParams().categoryId;
+    currentCategoryId    = getUrlParams().categoryId;
+    currentSortingOpt = getUrlParams().sortingOption;
 
     // Load categories
     $.getJSON('ajax/categories.php', function(data) {
@@ -47,10 +49,10 @@ $(document).ready(function() {
 
     // Sorting produtcs by selectbox
     $('#sorting').on('change', function() {
-    var categoryId = getUrlParams().categoryId;
         var sortingOption = $(this).val();
-        updateUrlParams(categoryId, sortingOption);
+        updateUrlParams(currentCategoryId, sortingOption);
         sortProducts(sortingOption);
+        currentSortingOpt = sortingOption;
     });
 
     // Open modal window on click "BUY"
@@ -59,6 +61,9 @@ $(document).ready(function() {
         var product = $(this).closest('.product-card').data('product');
         showProductModal(product);
     });
+
+    sortProducts(currentSortingOpt);
+
 });
 
 function loadProducts(categoryId) {
@@ -95,27 +100,29 @@ function loadProducts(categoryId) {
 }
 
 function sortProducts(sortingOption) {
-    var productsList = $('#products');
-    var products = productsList.children('.product-card').get();
-    products.sort(function(a, b) {
-        var aData = $(a).data('product');
-        var bData = $(b).data('product');
-        switch (sortingOption) {
-            case 'price_asc':
-                return aData.price - bData.price;
-            case 'alphabetical':
-                return aData.name.localeCompare(bData.name);
-            case 'newest':
-                return aData.unixtimeDateAdd - bData.unixtimeDateAdd;
-            default:
-                return 0;
-        }
-    });
+    if (sortingOption) {
+        var productsList = $('#products');
+        var products = productsList.children('.product-card').get();
+        products.sort(function(a, b) {
+            var aData = $(a).data('product');
+            var bData = $(b).data('product');
+            switch (sortingOption) {
+                case 'price_asc':
+                    return aData.price - bData.price;
+                case 'alphabetical':
+                    return aData.name.localeCompare(bData.name);
+                case 'newest':
+                    return aData.unixtimeDateAdd - bData.unixtimeDateAdd;
+                default:
+                    return 0;
+            }
+        });
 
-    productsList.empty();
-    $.each(products, function(index, product) {
-        productsList.append(product);
-    });
+        productsList.empty();
+        $.each(products, function(index, product) {
+            productsList.append(product);
+        });
+    }
 }
 
 function showProductModal(product) {
@@ -141,20 +148,15 @@ function getUrlParams() {
     };
 }
 
-function updateUrlParams(categoryId, sortingOption) {
-    var searchParams = new URLSearchParams();
-    var existingCategoryId = getUrlParams().categoryId;
-    var existingSortingOption = getUrlParams().sortingOption;
+function updateUrlParams(newCategoryId, newSortingOption) {
+    if (newCategoryId !== currentCategoryId || newSortingOption !== currentSortingOpt) {
+        var urlOptions = new URLSearchParams();
+        urlOptions.set('category_id', newCategoryId);
+        urlOptions.set('sorting', newSortingOption);
 
-    if (existingSortingOption && !sortingOption) {
-        searchParams.set('category_id', categoryId);
-    } else {
-        searchParams.set('category_id', categoryId);
-        searchParams.set('sorting', sortingOption);
+        var newUrl = window.location.pathname + '?' + urlOptions.toString();
+        window.history.pushState({}, '', newUrl);
     }
-
-    var newUrl = window.location.pathname + '?' + searchParams.toString();
-    window.history.pushState({}, '', newUrl);
 }
 
 $(window).on('popstate', function(event) {
