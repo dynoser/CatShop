@@ -1,3 +1,19 @@
+<?php
+  $sortOptionsArr = [
+    'price_asc' => 'by price increase', //'От дешевых к дорогим',
+    'alphabetical' => 'By Alphabet', //'По алфавиту',
+    'newest' => 'Newer ones first', //'Сначала более новые',
+  ];
+
+  $patternsArr = [
+    'patternDateAddModal' => 'Date added: {date}', // 'Товар в продаже с {date}',
+    'patternDateAddList' => 'date added: {date}', //'в продаже с {date}',
+    'patternPrice' => '{price}₴',
+    'toFixedPrice' => 0,
+    'dateLocale' => 'en-US', //'ru-RU',
+  ]
+
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -8,6 +24,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+<?php
+  foreach($patternsArr as $varName => $varValue) {
+    echo "var $varName = ";
+    echo is_numeric($varValue) ? $varValue : "'$varValue'";
+    echo ";\n";
+  }
+?>
+    </script>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -23,9 +48,14 @@
         <div class="col-md-8">
             <h2>Products</h2>
             <select id="sorting" class="form-control mb-3">
-                <option value="price_asc">От дешевых к дорогим</option>
-                <option value="alphabetical">По алфавиту</option>
-                <option value="newest">Сначала более новые</option>
+              <?php
+              foreach($sortOptionsArr as $key => $text) {
+                echo '<option value="' . $key . '">' . $text . '</option>';
+              }
+                // <option value="price_asc">От дешевых к дорогим</option>
+                // <option value="alphabetical">По алфавиту</option>
+                // <option value="newest">Сначала более новые</option>
+              ?>
             </select>
             <div id="products" class="row">
                 <!-- Item list will generated -->

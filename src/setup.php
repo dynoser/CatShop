@@ -7,7 +7,7 @@ require_once 'Config.php';
 $conf = new Config(true);
 
 // Random images generate:
-require_once 'imagesgen.php';
+//require_once 'imagesgen.php';
 
 // create database-setup object
 $setup = new SetupDB($conf);

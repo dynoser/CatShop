@@ -1,6 +1,3 @@
-var patternDateAddModal = 'Товар в продаже с {date}';
-var patternDateAddList = 'в продаже с {date}';
-
 var currentCategoryId = 0;
 var currentSortingOpt = 0;
 
@@ -83,7 +80,10 @@ function loadProducts(categoryId) {
             var DateAdd = new Date(product.date_added);
             product.DateAdd = DateAdd;
             product.unixtimeDateAdd = product.DateAdd.getTime();
-            product.formattedDateAdd = product.DateAdd.toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+            product.formattedDateAdd = product.DateAdd.toLocaleString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' });
+
+            var price = Number(product.price).toFixed(toFixedPrice);
+            product.formattedPrice = patternPrice.replace('{price}', price);
 
             var card = $('<div>').addClass('col-md-4 product-card').data('product', product);
             card.attr('data-product', JSON.stringify(product));
@@ -91,7 +91,7 @@ function loadProducts(categoryId) {
             var title = $('<h4>').text(product.name);
             var dateAdd = $('<small>').text(patternDateAddList.replace("{date}", product.formattedDateAdd));
             var description = $('<p>').text(product.description);
-            var price = $('<p>').addClass('text-success').text('$' + product.price);
+            var price = $('<p>').addClass('text-success').text(product.formattedPrice);
             var buyButton = $('<a>').addClass('btn btn-primary btn-block buy-button').attr('href', '#').text('Купить');
             card.append(image, title, dateAdd, description, price, buyButton);
             productsList.append(card);
@@ -137,7 +137,7 @@ function showProductModal(product) {
     var title = $('<h4>').text(product.name);
     var dateAdd = $('<small>').text(patternDateAddModal.replace('{date}', product.formattedDateAdd));
     var description = $('<p>').text(product.description);
-    var price = $('<p>').addClass('text-success').text('$' + product.price);
+    var price = $('<p>').addClass('text-success').text(product.formattedPrice);
     var closeButton = $('<button>').addClass('btn btn-secondary').attr('type', 'button').attr('data-dismiss', 'modal').text('Close');
     modalContent.append(image, title, description, dateAdd, price, closeButton);
     modal.modal('show');
