@@ -62,7 +62,11 @@ $(document).ready(function() {
         showProductModal(product);
     });
 
-    sortProducts(currentSortingOpt);
+    if (currentSortingOpt) {
+        var selectEl = $('#sorting');
+        selectEl.val(currentSortingOpt);
+        sortProducts(currentSortingOpt);
+    }
 
 });
 
