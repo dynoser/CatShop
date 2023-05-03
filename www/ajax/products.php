@@ -16,8 +16,8 @@ if ($category_id) {
     }
     $sql .= " WHERE category_id=" . $category_id;
 } else {
-    // List all products if category_id not specified ? Ok or die
-    // die("Can't list all products");
+    // List products if category_id not specified
+    $sql .= " LIMIT 50";
 }
 
 // do request
