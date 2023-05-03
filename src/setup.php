@@ -1,6 +1,8 @@
 <?php
 namespace dynoser\catshop;
 
+if (empty($argc)) die("Shell mode only");
+
 require_once 'SetupDB.php';
 require_once 'Config.php';
 
