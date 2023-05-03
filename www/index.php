@@ -1,17 +1,20 @@
 <?php
+  // preset global JS values
+  $patternsArr = [
+    'patternDateAddModal' => 'Date added: {date}', // 'Товар в продаже с {date}',
+    'patternDateAddList' => 'date added: {date}', //'в продаже с {date}',
+    'patternPrice' => '{price}₴', // формат вывода цены
+    'toFixedPrice' => 0, // до скольки знаков после запятой обрезается цена (в базе хранятся 2 знака после запятой)
+    'dateLocale' => 'en-US', //'ru-RU',
+    'buyText' => 'BUY', //'Купить'
+  ];
+
+  // Sort options array
   $sortOptionsArr = [
     'price_asc' => 'by price increase', //'От дешевых к дорогим',
     'alphabetical' => 'By Alphabet', //'По алфавиту',
     'newest' => 'Newer first', //'Сначала более новые',
   ];
-
-  $patternsArr = [
-    'patternDateAddModal' => 'Date added: {date}', // 'Товар в продаже с {date}',
-    'patternDateAddList' => 'date added: {date}', //'в продаже с {date}',
-    'patternPrice' => '{price}₴',
-    'toFixedPrice' => 0,
-    'dateLocale' => 'en-US', //'ru-RU',
-  ]
 
 ?>
 <!DOCTYPE html>

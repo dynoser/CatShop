@@ -92,7 +92,7 @@ function loadProducts(categoryId) {
             var dateAdd = $('<small>').text(patternDateAddList.replace("{date}", product.formattedDateAdd));
             var description = $('<p>').text(product.description);
             var price = $('<p>').addClass('text-success').text(product.formattedPrice);
-            var buyButton = $('<a>').addClass('btn btn-primary btn-block buy-button').attr('href', '#').text('Купить');
+            var buyButton = $('<a>').addClass('btn btn-primary btn-block buy-button').attr('href', '#').text(buyText);
             card.append(image, title, dateAdd, description, price, buyButton);
             productsList.append(card);
         });
@@ -138,7 +138,7 @@ function showProductModal(product) {
     var dateAdd = $('<small>').text(patternDateAddModal.replace('{date}', product.formattedDateAdd));
     var description = $('<p>').text(product.description);
     var price = $('<p>').addClass('text-success').text(product.formattedPrice);
-    var closeButton = $('<button>').addClass('btn btn-secondary').attr('type', 'button').attr('data-dismiss', 'modal').text('Close');
+    var closeButton = $('<button>').addClass('btn btn-secondary').attr('type', 'button').attr('data-dismiss', 'modal').text(buyText);
     modalContent.append(image, title, description, dateAdd, price, closeButton);
     modal.modal('show');
 }
