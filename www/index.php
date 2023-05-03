@@ -11,7 +11,7 @@
 
   // Sort options array
   $sortOptionsArr = [
-    'price_asc' => 'by price increase', //'От дешевых к дорогим',
+    'price_asc' => 'By price increase', //'От дешевых к дорогим',
     'alphabetical' => 'By Alphabet', //'По алфавиту',
     'newest' => 'Newer first', //'Сначала более новые',
   ];
@@ -55,9 +55,6 @@
               foreach($sortOptionsArr as $key => $text) {
                 echo '<option value="' . $key . '">' . $text . '</option>';
               }
-                // <option value="price_asc">От дешевых к дорогим</option>
-                // <option value="alphabetical">По алфавиту</option>
-                // <option value="newest">Сначала более новые</option>
               ?>
             </select>
             <div id="products" class="row">
